@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Passenger menu</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+         <form action="CreatePassengerServlet" method="POST">
+            Create passenger:<br>
+            First name:<br>
+            <input type="text" name="first_name" value="First Name"><br>
+            Last name:<br>
+            <input type="text" name="last_name" value="Last Name"><br>
+            Service class:<br>
+            <input type="text" name="service_class" value="Service Class"><br>
+            Flight Id:<br>
+            <input type="text" name="flight_id" value="Flight Id"><br>
+            <input type="submit" value="Submit"><br><br>
+        </form>
+         <form action="ReadPassengerServlet" method="POST">
+            Read all passengers:<br>
+            <input type="submit" value="Submit"><br><br>
+        </form>
+        <form action="UpdatePassengerServlet" method="POST">
+            Update the passenger:<br>
+            Id of the passenger:<br>
+            <input type="text" name="passenger_id" value="Id"><br>
+            First name:<br>
+            <input type="text" name="first_name" value="First Name"><br>
+            Last name:<br>
+            <input type="text" name="last_name" value="Last Name"><br>
+            Service class:<br>
+            <input type="text" name="service_class" value="Service Class"><br>
+            Flight Id:<br>
+            <input type="text" name="flight_id" value="Flight Id"><br>
+            <input type="submit" value="Submit"><br><br>
+        </form>
+        <form action="DeletePassengerServlet" method="POST">
+            Delete the passenger:<br>
+            Id of the passenger:<br>
+            <input type="text" name="passenger_id" value="Id"/><br>
+            <input type="submit" value="Submit"/><br><br>
+        </form>
+    </body>
+</html>

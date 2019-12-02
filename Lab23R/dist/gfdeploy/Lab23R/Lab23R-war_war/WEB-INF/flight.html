@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flight menu</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="CreateFlightServlet" method="POST">
+            Create flight:<br>
+            Aircraft type:<br>
+            <input type="text" name="aircraft_type" value="Aircraft type"><br>
+            Departure location:<br>
+            <input type="text" name="departure_location" value="Departure location"><br>
+            Arrival location:<br>
+            <input type="text" name="arrival_location" value="Arrival location"><br>
+            <input type="submit" value="Submit"/><br><br>
+        </form>
+        <form action="ReadFlightServlet" method="POST">
+            Read all flights:<br>
+            <input type="submit" value="Submit"/><br><br>
+        </form>
+        <form action="UpdateFlightServlet" method="POST">
+            Update the flight:<br>
+            Id of the flight:<br>
+            <input type="text" name="flight_id" value="Id"/><br>
+            Aircraft type:<br>
+            <input type="text" name="aircraft_type" value="Aircraft type"><br>
+            Departure location:<br>
+            <input type="text" name="departure_location" value="Departure location"><br>
+            Arrival location:<br>
+            <input type="text" name="arrival_location" value="Arrival location"><br>
+            <input type="submit" value="Submit"/><br><br>
+        </form>
+        <form action="DeleteFlightServlet" method="POST">
+            Delete the flight:<br>
+            Id of the flight:<br>
+            <input type="text" name="flight_id" value="Id"/><br>
+            <input type="submit" value="Submit"/><br><br>
+        </form>
+    </body>
+</html>

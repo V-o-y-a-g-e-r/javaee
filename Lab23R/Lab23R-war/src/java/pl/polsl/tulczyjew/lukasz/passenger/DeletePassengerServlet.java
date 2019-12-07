@@ -9,20 +9,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import pl.polsl.tulczyjew.lukasz.CookieManagerServlet;
 import pl.polsl.tulczyjew.lukasz.PassengerBean;
 import pl.polsl.tulczyjew.lukasz.model.Passenger;
 
 /**
  * Delete passenger servlet.
+ *
  * @author Lukasz Tulczyjew
  * @version 1.0.0
  */
 @WebServlet(name = "DeletePassengerServlet", urlPatterns = {"/DeletePassengerServlet"})
 public class DeletePassengerServlet extends HttpServlet {
-    
+
     @EJB
     PassengerBean passengerBean;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,16 +47,19 @@ public class DeletePassengerServlet extends HttpServlet {
             int intPassengerId = Integer.parseInt(passengerId);
             Passenger passenger = this.passengerBean
                     .readPassenger(intPassengerId);
-            if (passenger != null) { 
+            if (passenger != null) {
                 this.passengerBean.deletePassenger(intPassengerId);
                 out.println("Passenger was deleted.");
+                String key = "DeletePassenger";
+                CookieManagerServlet.addCookie(request, response, key);
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "There is no such passenger.");
-            }     
+            }
         }
     }
- /**
+
+    /**
      * Handles the HTTP <code>GET</code> method.
      *
      * @param request Servlet request.

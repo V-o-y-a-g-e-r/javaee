@@ -9,11 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import pl.polsl.tulczyjew.lukasz.CookieManagerServlet;
 import pl.polsl.tulczyjew.lukasz.FlightBean;
 import pl.polsl.tulczyjew.lukasz.model.Flight;
 
 /**
  * Create flight servlet.
+ *
  * @author Lukasz Tulczyjew
  * @version 1.0.0
  */
@@ -22,7 +24,7 @@ public class CreateFlightServlet extends HttpServlet {
 
     @EJB
     FlightBean flightBean;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,17 +37,17 @@ public class CreateFlightServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String aircraftType, departureLocation, arrivalLocation;
             aircraftType = request.getParameter("aircraft_type");
             departureLocation = request.getParameter("departure_location");
             arrivalLocation = request.getParameter("arrival_location");
-            
+
             final Pattern label = Pattern.compile("^[a-zA-Z]{3,}$");
             if (!Pattern.compile("^[a-zA-Z0-9]{2,}$")
-                .matcher(aircraftType).matches()) {
+                    .matcher(aircraftType).matches()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "The type of the aircraft is incorrect.");
                 return;
@@ -63,6 +65,9 @@ public class CreateFlightServlet extends HttpServlet {
             this.flightBean.createFlight(new Flight(aircraftType,
                     departureLocation, arrivalLocation));
             out.println("Flight was added.");
+
+            String key = "CreateFlight";
+            CookieManagerServlet.addCookie(request, response, key);
         }
     }
 

@@ -6,7 +6,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import pl.polsl.tulczyjew.lukasz.model.Passenger;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-12-02T02:06:25")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-12-07T21:16:52")
 @StaticMetamodel(Flight.class)
 public class Flight_ { 
 

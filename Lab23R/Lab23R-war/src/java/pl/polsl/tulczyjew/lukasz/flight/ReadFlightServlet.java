@@ -9,11 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import pl.polsl.tulczyjew.lukasz.CookieManagerServlet;
 import pl.polsl.tulczyjew.lukasz.FlightBean;
 import pl.polsl.tulczyjew.lukasz.model.Flight;
 
 /**
  * Read flight servlet.
+ *
  * @author Lukasz Tulczyjew
  * @version 1.0.0
  */
@@ -22,7 +24,7 @@ public class ReadFlightServlet extends HttpServlet {
 
     @EJB
     FlightBean flightBean;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,13 +39,15 @@ public class ReadFlightServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             List<Flight> allFlights = this.flightBean.readAllFlights();
-            for(Flight flight: allFlights) {
+            for (Flight flight : allFlights) {
                 out.println(flight.toString() + "<br/>");
             }
+            String key = "ReadFlight";
+            CookieManagerServlet.addCookie(request, response, key);
         }
     }
 
-     /**
+    /**
      * Handles the HTTP <code>GET</code> method.
      *
      * @param request Servlet request.

@@ -1,29 +1,23 @@
-package pl.polsl.tulczyjew.lukasz.flight;
+package pl.polsl.tulczyjew.lukasz;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Pattern;
-import javax.ejb.EJB;
+import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import pl.polsl.tulczyjew.lukasz.CookieManagerServlet;
-import pl.polsl.tulczyjew.lukasz.FlightBean;
-import pl.polsl.tulczyjew.lukasz.model.Flight;
 
 /**
- * Delete flight servlet.
+ * Create flight servlet.
  *
  * @author Lukasz Tulczyjew
  * @version 1.0.0
  */
-@WebServlet(name = "DeleteFlightServlet", urlPatterns = {"/DeleteFlightServlet"})
-public class DeleteFlightServlet extends HttpServlet {
-
-    @EJB
-    FlightBean flightBean;
+@WebServlet(name = "CookieManagerServlet", urlPatterns = {"/CookieManagerServlet"})
+public class CookieManagerServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,24 +32,30 @@ public class DeleteFlightServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String flightId = request.getParameter("flight_id");
-            if (!Pattern.compile("^[0-9]{1,}$").matcher(flightId).matches()) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "The type of the id is incorrect.");
-                return;
-            }
-            int intFlightId = Integer.parseInt(flightId);
-            Flight flight = this.flightBean.readFlight(intFlightId);
-            if (flight != null) {
-                this.flightBean.deleteFlight(intFlightId);
-                out.println("Flight was deleted.");
-                String key = "DeleteFlight";
-                CookieManagerServlet.addCookie(request, response, key);
-            } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "There is no such flight.");
+            request.getRequestDispatcher("/WEB-INF/cookie.html")
+                    .include(request, response);
+            Cookie[] cookies = request.getCookies();
+            out.println("Cookies:");
+            for (Cookie cookie : cookies) {
+                out.println(cookie.getName() + "\t" + cookie.getValue() + "\n");
             }
         }
+    }
+
+    
+    public static void addCookie(HttpServletRequest request,
+            HttpServletResponse response, String key) {
+        Cookie cookie;
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            cookie = new Cookie(key, "0");
+        } else {
+            cookie = Arrays.stream(cookies)
+                    .filter(obj -> key.equalsIgnoreCase(obj.getName()))
+                    .findFirst().orElse(new Cookie(key, "0"));
+        }
+        cookie.setValue(Integer.toString(Integer.parseInt(cookie.getValue()) + 1));
+        response.addCookie(cookie);
     }
 
     /**

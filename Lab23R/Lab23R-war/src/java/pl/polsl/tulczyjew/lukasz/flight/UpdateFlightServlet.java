@@ -9,21 +9,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import pl.polsl.tulczyjew.lukasz.CookieManagerServlet;
 import pl.polsl.tulczyjew.lukasz.FlightBean;
 import pl.polsl.tulczyjew.lukasz.model.Flight;
 
 /**
  * Update flight servlet.
+ *
  * @author Lukasz Tulczyjew
  * @version 1.0.0
  */
 @WebServlet(name = "UpdateFlightServlet", urlPatterns = {"/UpdateFlightServlet"})
 public class UpdateFlightServlet extends HttpServlet {
 
-  
     @EJB
     FlightBean flightBean;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,7 +43,7 @@ public class UpdateFlightServlet extends HttpServlet {
             aircraftType = request.getParameter("aircraft_type");
             departureLocation = request.getParameter("departure_location");
             arrivalLocation = request.getParameter("arrival_location");
-            
+
             final Pattern label = Pattern.compile("^[a-zA-Z]{3,}$");
             if (!Pattern.compile("^[0-9]{1,}$").matcher(flightId).matches()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -50,7 +51,7 @@ public class UpdateFlightServlet extends HttpServlet {
                 return;
             }
             if (!Pattern.compile("^[a-zA-Z0-9]{2,}$")
-                .matcher(aircraftType).matches()) {
+                    .matcher(aircraftType).matches()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "The type of the aircraft is incorrect.");
                 return;
@@ -68,19 +69,21 @@ public class UpdateFlightServlet extends HttpServlet {
             int intFlightId = Integer.parseInt(flightId);
             Flight flight = this.flightBean.readFlight(intFlightId);
             if (flight != null) {
-                 flight.setAircraftType(aircraftType);
+                flight.setAircraftType(aircraftType);
                 flight.setDepatruteLocation(departureLocation);
                 flight.setArrivalLocation(arrivalLocation);
                 this.flightBean.updateFlight(flight);
                 out.println("Flight was updated.");
+                String key = "UpdateFlight";
+                CookieManagerServlet.addCookie(request, response, key);
             } else {
-                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "There is no such flight.");
             }
         }
     }
 
-     /**
+    /**
      * Handles the HTTP <code>GET</code> method.
      *
      * @param request Servlet request.

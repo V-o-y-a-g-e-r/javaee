@@ -9,11 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import pl.polsl.tulczyjew.lukasz.CookieManagerServlet;
 import pl.polsl.tulczyjew.lukasz.PassengerBean;
 import pl.polsl.tulczyjew.lukasz.model.Passenger;
 
 /**
  * Read passenger servlet.
+ *
  * @author Lukasz Tulczyjew
  * @version 1.0.0
  */
@@ -22,7 +24,7 @@ public class ReadPassengerServlet extends HttpServlet {
 
     @EJB
     PassengerBean passengerBean;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,6 +42,8 @@ public class ReadPassengerServlet extends HttpServlet {
             for (Passenger passenger : allPassengers) {
                 out.println(passenger.toString() + "<br/>");
             }
+            String key = "ReadPassenger";
+            CookieManagerServlet.addCookie(request, response, key);
         }
     }
 

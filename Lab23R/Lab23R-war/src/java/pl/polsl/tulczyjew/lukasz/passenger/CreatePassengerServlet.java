@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import pl.polsl.tulczyjew.lukasz.CookieManagerServlet;
 import pl.polsl.tulczyjew.lukasz.FlightBean;
 import pl.polsl.tulczyjew.lukasz.PassengerBean;
 import pl.polsl.tulczyjew.lukasz.model.Flight;
@@ -16,19 +17,19 @@ import pl.polsl.tulczyjew.lukasz.model.Passenger;
 
 /**
  * Create passenger servlet.
+ *
  * @author Lukasz Tulczyjew
  * @version 1.0.0
  */
 @WebServlet(name = "CreatePassengerServlet", urlPatterns = {"/CreatePassengerServlet"})
 public class CreatePassengerServlet extends HttpServlet {
 
-    
     @EJB
     FlightBean flightBean;
-    
+
     @EJB
     PassengerBean passengerBean;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,7 +48,7 @@ public class CreatePassengerServlet extends HttpServlet {
             lastName = request.getParameter("last_name");
             serviceClass = request.getParameter("service_class");
             flightId = request.getParameter("flight_id");
-            
+
             final Pattern label = Pattern.compile("^[a-zA-Z]{1,100}");
             if (!label.matcher(firstName).matches()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -73,8 +74,11 @@ public class CreatePassengerServlet extends HttpServlet {
             Flight flight = this.flightBean.readFlight(intFlightId);
             if (flight != null) {
                 this.passengerBean.createPassenger(
-                    new Passenger(firstName, lastName,serviceClass, flight));
+                        new Passenger(firstName, lastName, serviceClass, flight));
                 out.println("Passenger was added.");
+                String key = "CreatePassenger";
+                CookieManagerServlet.addCookie(request, response, key);
+
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "There is no such flight.");
